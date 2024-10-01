@@ -4,6 +4,7 @@ import { OrbitControls, PerspectiveCamera } from '@react-three/drei';
 import { AutumnForest } from './AutumnForest';
 import ToggleButton from './ToggleButton';  
 
+
 function StartingPage() {
     const [isRotating, setIsRotating] = useState(true); 
     const handleToggleRotation = () => {

@@ -4,7 +4,14 @@ module.exports = {
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      animation: {
+        'slow-pulse': 'pulse 10s infinite',
+      },
+      fontFamily: {
+        Cormorant: 'Cormorant SC',
+      }
+    },
   },
   plugins: [],
 }

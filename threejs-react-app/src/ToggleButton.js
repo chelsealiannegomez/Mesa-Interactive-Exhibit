@@ -1,42 +1,38 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-
-const buttonStyle = {
-  position: 'absolute',
-  top: '50%',                  
-  left: '50%',                  
-  width: '100%',
-  height: '100%',
-  backgroundColor: 'rgba(0, 0, 0, 0)',
-  border: 'none',
-  cursor: 'pointer',
-  fontSize: '30px',
-  //borderRadius: '50%',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  transform: 'translate(-50%, -50%)',
-}
-
-const textStyle = {
-  color: 'white',
-  //backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  //width: "100%",
-  textShadow: 'black 0 0 20px',
-}
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const ToggleButton = ({ isRotating, handleToggleRotation }) => {
-  
+  const [fadeOut, setFadeOut] = useState(false);
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    handleToggleRotation();  
+    setFadeOut(true);       
+
+    setTimeout(() => {
+      navigate('./Page1');
+    }, 6000); 
+  };
+
   return (
-    <Link to="./Page1">
-    <button
-      onClick={handleToggleRotation}
-      className="absolute top-1/2 left-1/2 w-full h-full bg-transparent border-none cursor-pointer text-2xl flex items-center justify-center transform -translate-x-1/2 -translate-y-1/2"
+    <div
+      className={`absolute top-0 left-0 w-full h-full flex items-center justify-center transition-colors duration-[5000ms] ${
+        fadeOut ? 'bg-white' : 'bg-transparent'
+      }`}
     >
-      <h1 className="text-6xl text-white font-bold drop-shadow animate-pulse">{isRotating ? 'Press anywhere to start' : 'Entering now'}</h1>
-      
-    </button>
-    </Link>
+      <button
+        onClick={handleClick}
+        className="absolute top-1/2 left-1/2 w-screen h-screen bg-transparent border-none cursor-pointer flex items-center justify-center transform -translate-x-1/2 -translate-y-1/2"
+      >
+        <h1
+          className={`text-8xl font-Cormorant text-white drop-shadow transition-opacity duration-[5000ms] ${
+            fadeOut ? 'opacity-0' : 'opacity-100'
+          }`}
+        >
+          {isRotating ? 'Press anywhere to start' : 'Entering now'}
+        </h1>
+      </button>
+    </div>
   );
 };
 
