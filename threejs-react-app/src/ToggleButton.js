@@ -10,7 +10,7 @@ const ToggleButton = ({ isRotating, handleToggleRotation }) => {
     setFadeOut(true);       
 
     setTimeout(() => {
-      navigate('./Page1');
+      navigate('./room');
     }, 6000); 
   };
 
