@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const buttonStyle = {
   position: 'absolute',
@@ -27,14 +28,15 @@ const textStyle = {
 const ToggleButton = ({ isRotating, handleToggleRotation }) => {
   
   return (
-    
+    <Link to="./Page1">
     <button
-      style={buttonStyle}
       onClick={handleToggleRotation}
+      className="absolute top-1/2 left-1/2 w-full h-full bg-transparent border-none cursor-pointer text-2xl flex items-center justify-center transform -translate-x-1/2 -translate-y-1/2"
     >
-      <h1 style={textStyle}>{isRotating ? 'Press anywhere to start' : 'Entering now'}</h1>
+      <h1 className="text-6xl text-white font-bold drop-shadow animate-pulse">{isRotating ? 'Press anywhere to start' : 'Entering now'}</h1>
       
     </button>
+    </Link>
   );
 };
 
