@@ -1,24 +1,27 @@
-import React, { Suspense, useRef, useState } from 'react'; 
-import { Canvas, useFrame } from '@react-three/fiber';
-import Room from './Room'
+import React from 'react';
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls, Sphere } from '@react-three/drei';
+import * as THREE from 'three';
+import { TextureLoader } from 'three';
 
-function Roompage() {
-  const [isRotating, setIsRotating] = useState(true); 
-  const handleToggleRotation = () => {
-    setIsRotating(!isRotating);
-  };
+
+function Room() {
+  const texture = new TextureLoader().load('/room/textures/theroomviewfinal.jpg');
 
   return (
-    <>
-      <Canvas>
-        <ambientLight intensity={0.5} />
-        <spotLight position={[10, 10, 10]} angle={0.3} />
-        <Suspense fallback={null}>
-          <Room/>
-        </Suspense>
-      </Canvas>
-    </>
+    <Sphere args={[500, 60, 40]} scale={[-1, 1, 1]}>
+      <meshBasicMaterial map={texture} side={THREE.BackSide} />
+    </Sphere>
   );
 }
 
-export default Roompage;
+function RoomPage() {
+  return (
+    <Canvas>
+      <OrbitControls enableZoom={false} />
+      <Room />
+    </Canvas>
+  );
+}
+
+export default RoomPage;
