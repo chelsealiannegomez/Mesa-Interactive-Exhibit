@@ -11,12 +11,12 @@ const ToggleButton = ({ isRotating, handleToggleRotation }) => {
 
     setTimeout(() => {
       navigate('./room');
-    }, 6000); 
+    }, 3000); 
   };
 
   return (
     <div
-      className={`absolute top-0 left-0 w-full h-full flex items-center justify-center transition-colors duration-[5000ms] ${
+      className={`absolute top-0 left-0 w-full h-full flex items-center justify-center transition-colors duration-[3000ms] ${
         fadeOut ? 'bg-white' : 'bg-transparent'
       }`}
     >
@@ -25,7 +25,7 @@ const ToggleButton = ({ isRotating, handleToggleRotation }) => {
         className="absolute top-1/2 left-1/2 w-screen h-screen bg-transparent border-none cursor-pointer flex items-center justify-center transform -translate-x-1/2 -translate-y-1/2"
       >
         <h1
-          className={`text-8xl font-Cormorant text-white drop-shadow transition-opacity duration-[5000ms] ${
+          className={`text-8xl font-Cormorant text-white drop-shadow transition-opacity duration-[3000ms] ${
             fadeOut ? 'opacity-0' : 'opacity-100'
           }`}
         >
