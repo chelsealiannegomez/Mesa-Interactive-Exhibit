@@ -9,53 +9,55 @@ function Room() {
   const texture = new TextureLoader().load('/room/textures/theroomviewfinal.jpg');
 
   return (
-    <Sphere args={[500, 60, 40]} scale={[-1, 1, 1]}>
+    <Sphere args={[500, 60, 40]} scale={[-1, 1, 1.2]}>
       <meshBasicMaterial map={texture} side={THREE.BackSide} />
     </Sphere>
   );
 }
 
-function BookModel({ onClick }) {
+function BookModel({ onClick, cameraRef }) {
   const { scene } = useGLTF('/book/scene.gltf');
   const bookRef = useRef();
   const [isAnimating, setIsAnimating] = useState(false);
 
-  // Initial and final positions for the animation
-  const initialPosition = useRef(new THREE.Vector3(370, -250, 90));
-  const finalPosition = new THREE.Vector3(40, 0, 0);
+  //Book initial and final positions
+  const initialPosition = useRef(new THREE.Vector3(370, -200, 110));
+  const finalPosition = new THREE.Vector3(60, -10, -5);
 
+  //Book initial and final rotations
   const initialRotation = useRef([Math.PI / 2, -Math.PI / 2, Math.PI / 2]);
-  const finalRotation = [Math.PI / 2, 0, Math.PI / 2];
+  const finalRotation = [Math.PI / 2, 0+0.1, Math.PI / 2 -0.1];
+
+  const finalCameraPosition = new THREE.Vector3(-60, 6, 5);
 
   useFrame((state, delta) => {
     const time = state.clock.getElapsedTime();
 
-    // If the book is clicked, animate the transition to the final position
     if (isAnimating) {
-      bookRef.current.position.lerp(finalPosition, delta * 2); // Speed of transition
+      bookRef.current.position.lerp(finalPosition, delta * 2);
       bookRef.current.rotation.x = THREE.MathUtils.lerp(bookRef.current.rotation.x, finalRotation[0], delta * 2);
       bookRef.current.rotation.y = THREE.MathUtils.lerp(bookRef.current.rotation.y, finalRotation[1], delta * 2);
       bookRef.current.rotation.z = THREE.MathUtils.lerp(bookRef.current.rotation.z, finalRotation[2], delta * 2);
 
-      // Check if the book has reached close to the final position
+      cameraRef.current.position.lerp(finalCameraPosition, delta * 1.5); 
+
       if (bookRef.current.position.distanceTo(finalPosition) < 0.1) {
-        onClick(); // Trigger navigation once the animation completes
+        onClick();
       }
     } else {
-      // Apply the floating effect before the book is clicked
-      bookRef.current.position.y += Math.sin(time * 3) * 1; // Floating effect
+      bookRef.current.position.y += Math.sin(time * 3) * 1;
     }
   });
 
   const handleClick = () => {
-    setIsAnimating(true); // Start animation when the book is clicked
+    setIsAnimating(true);
   };
 
   return (
     <primitive
       ref={bookRef}
       object={scene}
-      scale={[0.75, 0.4, 0.75]}
+      scale={[1, 0.6, 1]}
       position={initialPosition.current}
       rotation={initialRotation.current}
       onClick={handleClick}
@@ -67,6 +69,7 @@ function BookModel({ onClick }) {
 function RoomPage() {
   const [fade, setFade] = useState(true);
   const navigate = useNavigate();
+  const cameraRef = useRef();
 
   const handleBookClick = () => {
     navigate('/flipbook');
@@ -85,11 +88,16 @@ function RoomPage() {
         } pointer-events-none z-50`}
       />
 
-      <Canvas className="w-full h-full bg-white" camera={{ position: [-60, 20, 5] }} style={{ backgroundColor: 'white' }}>
+      <Canvas
+        className="w-full h-full bg-white"
+        camera={{ fov: 65, position: [-60, 20, 5] }}
+        onCreated={({ camera }) => (cameraRef.current = camera)}
+        style={{ backgroundColor: 'white' }}
+      >
         <OrbitControls enableZoom={false} />
         <ambientLight intensity={10} />
         <Room />
-        <BookModel onClick={handleBookClick} />
+        <BookModel onClick={handleBookClick} cameraRef={cameraRef} />
       </Canvas>
     </div>
   );
