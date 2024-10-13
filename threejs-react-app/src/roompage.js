@@ -94,7 +94,9 @@ function RoomPage() {
         onCreated={({ camera }) => (cameraRef.current = camera)}
         style={{ backgroundColor: 'white' }}
       >
-        <OrbitControls enableZoom={false} />
+        <OrbitControls enableZoom={false} 
+        minPolarAngle={Math.PI / 3.5}
+        />
         <ambientLight intensity={10} />
         <Room />
         <BookModel onClick={handleBookClick} cameraRef={cameraRef} />
