@@ -2,7 +2,7 @@ import React from "react";
 //import { Routes, Route } from 'react-router-dom';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import StartingPage from "./StartingPage";
-import RoomPage from "./RoomPage";
+import RoomPage from "./roompage";
 import Flipbook from "./objects/Flipbook";
 
 function App() {

@@ -20,13 +20,13 @@ function BookModel({ onClick, cameraRef }) {
   const bookRef = useRef();
   const [isAnimating, setIsAnimating] = useState(false);
 
-  //Book initial and final positions
+  // Book initial and final positions
   const initialPosition = useRef(new THREE.Vector3(370, -200, 110));
   const finalPosition = new THREE.Vector3(60, -10, -5);
 
-  //Book initial and final rotations
+  // Book initial and final rotations
   const initialRotation = useRef([Math.PI / 2, -Math.PI / 2, Math.PI / 2]);
-  const finalRotation = [Math.PI / 2, 0+0.1, Math.PI / 2 -0.1];
+  const finalRotation = [Math.PI / 2, 0 + 0.1, Math.PI / 2 - 0.1];
 
   const finalCameraPosition = new THREE.Vector3(-60, 6, 5);
 
@@ -39,7 +39,7 @@ function BookModel({ onClick, cameraRef }) {
       bookRef.current.rotation.y = THREE.MathUtils.lerp(bookRef.current.rotation.y, finalRotation[1], delta * 2);
       bookRef.current.rotation.z = THREE.MathUtils.lerp(bookRef.current.rotation.z, finalRotation[2], delta * 2);
 
-      cameraRef.current.position.lerp(finalCameraPosition, delta * 1.5); 
+      cameraRef.current.position.lerp(finalCameraPosition, delta * 1.5);
 
       if (bookRef.current.position.distanceTo(finalPosition) < 0.1) {
         onClick();
@@ -67,35 +67,49 @@ function BookModel({ onClick, cameraRef }) {
 }
 
 function RoomPage() {
-  const [fade, setFade] = useState(true);
+  const [fade, setFade] = useState(true);   // To manage fade-in on load
+  const [fadeOut, setFadeOut] = useState(false); // To manage fade-out on click
   const navigate = useNavigate();
   const cameraRef = useRef();
 
   const handleBookClick = () => {
-    navigate('/flipbook');
+    // Trigger black fade-out effect before navigating to '/flipbook'
+    setFadeOut(true);
+    setTimeout(() => {
+      navigate('/flipbook');
+    }, 3000); // 3-second delay to allow for the black fade-out
   };
 
   useEffect(() => {
-    const timeout = setTimeout(() => setFade(false), 1000);
+    // Initial white fade-in effect when the page loads
+    const timeout = setTimeout(() => setFade(false), 1000); // Fade-in duration of 1 second
     return () => clearTimeout(timeout);
   }, []);
 
   return (
-    <div className="relative w-full h-screen bg-white z-50">
+    <div className="relative w-full h-screen z-50">
+      {/* White fade-in on load */}
       <div
-        className={`absolute inset-0 bg-white transition-opacity duration-[5000] ease-out ${
+        className={`absolute inset-0 bg-white transition-opacity duration-[1000ms] ease-out ${
           fade ? 'opacity-100' : 'opacity-0'
         } pointer-events-none z-50`}
       />
 
+      {/* Black fade-out on book click */}
+      <div
+        className={`absolute inset-0 bg-black transition-opacity duration-[3000ms] ease-out ${
+          fadeOut ? 'opacity-100' : 'opacity-0'
+        } pointer-events-none z-50`}
+      />
+
       <Canvas
-        className="w-full h-full bg-white"
+        className="w-full h-full"
         camera={{ fov: 65, position: [-60, 20, 5] }}
         onCreated={({ camera }) => (cameraRef.current = camera)}
-        style={{ backgroundColor: 'white' }}
+        style={{ backgroundColor: 'black' }}
       >
         <OrbitControls enableZoom={false} 
-        minPolarAngle={Math.PI / 3.5}
+          minPolarAngle={Math.PI / 3.5}
         />
         <ambientLight intensity={10} />
         <Room />
