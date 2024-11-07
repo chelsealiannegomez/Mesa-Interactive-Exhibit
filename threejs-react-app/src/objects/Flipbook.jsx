@@ -3,13 +3,9 @@ import HTMLFlipBook from "react-pageflip"; // Ensure this library is installed a
 import backgroundImage from '../img/background.jpeg'; // Import the image
 
 const Flipbook = () => {
-  // State to keep track of the current page number
   const [currentPage, setCurrentPage] = useState(0);
-
-  // Use a reference to directly manipulate the flipbook component and access methods like goToPage
   const flipBookRef = useRef(null);
 
-  // Array of chapter information for the flipbook
   const chapters = [
     {
       name: "Charles Crismon",
@@ -55,10 +51,8 @@ const Flipbook = () => {
     },
   ];
 
-  // Function to navigate to the specific chapter page when clicked
   const goToPage = (pageIndex) => {
     if (flipBookRef.current) {
-      // Add 2 to pageIndex (1 for the cover, 1 for the empty left page and table of contents)
       flipBookRef.current.pageFlip().flip(pageIndex + 2);
     }
   };
@@ -70,10 +64,10 @@ const Flipbook = () => {
     >
       <div className="w-full h-full max-w-[90vw] max-h-[90vh]">
         <HTMLFlipBook
-          ref={flipBookRef} // Connect the flipbook to the reference
-          width={600}
-          height={700}
-          size="stretch"
+          ref={flipBookRef}
+          width={350}
+          height={500}
+          size="fixed"
           minWidth={400}
           maxWidth={1000}
           minHeight={500}
@@ -83,7 +77,8 @@ const Flipbook = () => {
           showCover={true}
           usePortrait={false}
           autoSize={true}
-          onFlip={(e) => setCurrentPage(e.data)} // Update current page state on flip
+          onFlip={(e) => setCurrentPage(e.data)} 
+          style={{ marginLeft: '20px' , marginTop:'30px'}}
         >
           {/* Front Cover */}
           <div className="flex flex-col justify-center items-center p-8 bg-red-800 text-white font-serif text-center">
@@ -138,3 +133,4 @@ const Flipbook = () => {
 };
 
 export default Flipbook;
+
