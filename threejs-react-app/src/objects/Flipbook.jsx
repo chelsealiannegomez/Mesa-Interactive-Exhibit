@@ -78,7 +78,7 @@ const Flipbook = () => {
           usePortrait={false}
           autoSize={true}
           onFlip={(e) => setCurrentPage(e.data)} 
-          style={{ marginLeft: '20px' , marginTop:'30px'}}
+          style={{ marginLeft: '0px' , marginTop:'50px'}}
         >
           {/* Front Cover */}
           <div className="flex flex-col justify-center items-center p-8 bg-red-800 text-white font-serif text-center">
