@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import HTMLFlipBook from "react-pageflip"; // Ensure this library is installed and imported
+import backgroundImage from '../img/background.jpeg'; // Import the image
 
 const Flipbook = () => {
   const [currentPage, setCurrentPage] = useState(0);
@@ -57,8 +58,11 @@ const Flipbook = () => {
   };
 
   return (
-    <div className="flex justify-start items-center h-screen bg-gray-900">
-      <div className="w-full h-full max-w-[75vw] max-h-[75vh]">
+    <div
+      className="flex justify-center items-center h-screen bg-cover bg-center"
+      style={{ backgroundImage: `url(${backgroundImage})` }} // Use the imported image
+    >
+      <div className="w-full h-full max-w-[90vw] max-h-[90vh]">
         <HTMLFlipBook
           ref={flipBookRef}
           width={350}
@@ -129,3 +133,4 @@ const Flipbook = () => {
 };
 
 export default Flipbook;
+
