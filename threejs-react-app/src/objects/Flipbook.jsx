@@ -105,7 +105,7 @@ const Flipbook = () => {
           {chapters.map((chapter, index) => (
             <div
               key={index}
-              className="flex flex-col justify-center items-center p-8 bg-yellow-200 border-2 border-yellow-600"
+              className="flex flex-col justify-center items-center p-8 bg-[url('/page.png') bg-yellow-200 border-2 border-yellow-600"
             >
               <h2 className="text-3xl font-serif mb-4">{chapter.name}</h2>
               {chapter.birthYear && (

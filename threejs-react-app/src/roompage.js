@@ -20,11 +20,11 @@ function BookModel({ onClick, cameraRef }) {
   const bookRef = useRef();
   const [isAnimating, setIsAnimating] = useState(false);
 
-  // Book initial and final positions
+  //Book initial and final positions
   const initialPosition = useRef(new THREE.Vector3(370, -200, 110));
   const finalPosition = new THREE.Vector3(60, -10, -5);
 
-  // Book initial and final rotations
+  //Book initial and final rotations
   const initialRotation = useRef([Math.PI / 2, -Math.PI / 2, Math.PI / 2]);
   const finalRotation = [Math.PI / 2, 0 + 0.1, Math.PI / 2 - 0.1];
 
