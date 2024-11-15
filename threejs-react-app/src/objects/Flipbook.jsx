@@ -132,7 +132,7 @@ const Flipbook = () => {
               src={backPage}
               alt="Front Cover"
               className="absolute inset-0 w-full h-full object-cover"
-            />
+          />
           </div>
         </HTMLFlipBook>
       </div>
