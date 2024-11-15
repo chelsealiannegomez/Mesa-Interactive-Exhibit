@@ -1,6 +1,8 @@
 import React, { useState, useRef } from "react";
 import HTMLFlipBook from "react-pageflip"; 
 import backgroundImage from '../img/Desk_Background.png'; 
+import frontPage from '../img/front_cover.png'; 
+import backPage from '../img/back_cover.png'; 
 
 const Flipbook = () => {
   const [currentPage, setCurrentPage] = useState(0);
@@ -81,12 +83,12 @@ const Flipbook = () => {
           style={{ marginLeft: '0px' , marginTop:'50px'}}
         >
           {/* Front Cover */}
-          <div className="flex flex-col justify-center items-center p-8 bg-red-800 text-white font-serif text-center"
-
-          style={{ backgroundImage: `url(${backgroundImage})` }}>
-            
-            <h1 className="text-5xl font-bold">People of Mesa</h1>
-            <p className="text-2xl mt-4">A Historical Archive</p>
+          <div className="flex flex-col justify-center items-center p-8 text-white font-serif text-center relative">
+            <img
+              src={frontPage}
+              alt="Front Cover"
+              className="absolute inset-0 w-full h-full object-cover z-0"
+            />
           </div>
 
           {/* Left Page: Empty */}
@@ -100,7 +102,7 @@ const Flipbook = () => {
                 <li
                   key={index}
                   className="mb-2 text-blue-600 cursor-pointer hover:underline"
-                  onClick={() => goToPage(index)} // Navigate to the specific chapter page when clicked
+                  onClick={() => goToPage(index)}
                 >
                   {index + 1}. {chapter.name}
                 </li>
@@ -126,8 +128,11 @@ const Flipbook = () => {
 
           {/* Back Cover */}
           <div className="flex flex-col justify-center items-center p-8 bg-red-800 text-white font-serif text-center">
-            <h1 className="text-5xl font-bold">Thank You</h1>
-            <p className="text-2xl mt-4">for reading!</p>
+          <img
+              src={backPage}
+              alt="Front Cover"
+              className="absolute inset-0 w-full h-full object-cover"
+            />
           </div>
         </HTMLFlipBook>
       </div>
