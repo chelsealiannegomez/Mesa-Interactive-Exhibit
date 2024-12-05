@@ -151,29 +151,29 @@ const Flipbook = () => {
         </h1>
       </div>
 
-      {/* Sidebar */}
-      <div className={`absolute right-0 top-0 h-full transition-all duration-500 z-20 ${isHovered ? 'w-96' : 'w-32'} bg-no-repeat bg-cover cursor-pointer flex flex-col items-center py-8`}
-           style={{ backgroundImage: `url(${isHovered ? sideImageHover : sideImageDefault})`, backgroundSize: 'cover' }}
-           onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
+    <div 
+      className={`absolute right-0 top-0 h-full transition-all duration-500 z-20 ${isHovered ? 'w-96' : 'w-32'} bg-no-repeat bg-cover cursor-pointer flex flex-col items-center py-8`}
+      style={{ backgroundImage: `url(${isHovered ? sideImageHover : sideImageDefault})`, backgroundSize: 'cover' }}
+      onClick={() => setIsHovered(!isHovered)}
+    >
+      {isHovered ? (
+        <div className="flex flex-col items-start text-black mt-4 ml-16 animate-slide-in">
+          <h3 className="font-extrabold mb-4 text-2xl">Navigate</h3>
+          <ul className="text-xl list-none space-y-4">
+            {chapters.filter((_, i) => i % 2 === 0).map((chapter, index) => (
+              <li key={index} className="hover:underline cursor-pointer" onClick={() => goToPage(index)}>
+                {chapter.name.split(" - ")[0]}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : (
+        <div className="flex flex-col justify-center h-full text-black transform -rotate-90 ml-16">
+          <span className="text-2xl font-extrabold tracking-widest">Contents</span>
+        </div>
+      )}
+    </div>
 
-        {/* Sidebar Navigation Links */}
-        {isHovered ? (
-          <div className="flex flex-col items-start text-black mt-4 ml-16 animate-slide-in">
-            <h3 className="font-extrabold mb-4 text-2xl">Navigate</h3>
-            <ul className="text-xl list-none space-y-4">
-              {chapters.filter((_, i) => i % 2 === 0).map((chapter, index) => (
-                <li key={index} className="hover:underline cursor-pointer" onClick={() => goToPage(index)}>
-                  {chapter.name.split(" - ")[0]}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ) : (
-          <div className="flex flex-col justify-center h-full text-black transform -rotate-90 ml-16">
-            <span className="text-2xl font-extrabold tracking-widest">Contents</span>
-          </div>
-        )}
-      </div>
 
       {/* Flipbook */}
       <div className="flex justify-center items-center flex-1">
