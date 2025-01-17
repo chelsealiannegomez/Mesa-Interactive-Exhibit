@@ -9,14 +9,14 @@ function Room() {
   const texture = new TextureLoader().load('/room/textures/theroomviewfinal.jpg');
 
   return (
-    <Sphere args={[500, 60, 40]} scale={[-1, 1, 1.2]}>
+    <Sphere args={[600, 60, 40]} scale={[-1, 1, 1.2]}>
       <meshBasicMaterial map={texture} side={THREE.BackSide} />
     </Sphere>
   );
 }
 
 function BookModel({ onClick, cameraRef }) {
-  const { scene } = useGLTF('/book/scene.gltf');
+  const { scene } = useGLTF('/compressed_book.glb');
   const bookRef = useRef();
   const [isAnimating, setIsAnimating] = useState(false);
 
@@ -66,38 +66,86 @@ function BookModel({ onClick, cameraRef }) {
   );
 }
 
+function BookModel2({ onClick, cameraRef }) {
+  const { scene } = useGLTF('/compressed_book2.glb');
+  const bookRef = useRef();
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  //Book initial and final positions
+  const initialPosition = useRef(new THREE.Vector3(335, -200, -300));
+  const finalPosition = new THREE.Vector3(60, -10, -5);
+
+  //Book initial and final rotations
+  const initialRotation = useRef([Math.PI / 2, -Math.PI / 2.2, Math.PI / 2]);
+  const finalRotation = [Math.PI / 2, 0 + 0.1, Math.PI / 2 - 0.1];
+
+  const finalCameraPosition = new THREE.Vector3(-60, 6, 5);
+
+  useFrame((state, delta) => {
+    const time = state.clock.getElapsedTime();
+
+    if (isAnimating) {
+      bookRef.current.position.lerp(finalPosition, delta * 2);
+      bookRef.current.rotation.x = THREE.MathUtils.lerp(bookRef.current.rotation.x, finalRotation[0], delta * 2);
+      bookRef.current.rotation.y = THREE.MathUtils.lerp(bookRef.current.rotation.y, finalRotation[1], delta * 2);
+      bookRef.current.rotation.z = THREE.MathUtils.lerp(bookRef.current.rotation.z, finalRotation[2], delta * 2);
+
+      cameraRef.current.position.lerp(finalCameraPosition, delta * 1.5);
+
+      if (bookRef.current.position.distanceTo(finalPosition) < 0.1) {
+        onClick();
+      }
+    } else {
+      bookRef.current.position.y += Math.sin(time * 3) * 1;
+    }
+  });
+
+  const handleClick = () => {
+    setIsAnimating(true);
+  };
+
+  return (
+    <primitive
+      ref={bookRef}
+      object={scene}
+      scale={[1, 0.6, 0.8]}
+      position={initialPosition.current}
+      rotation={initialRotation.current}
+      onClick={handleClick}
+      className="cursor-pointer"
+    />
+  );
+}
+
+
 function RoomPage() {
-  const [fade, setFade] = useState(true);   // To manage fade-in on load
-  const [fadeOut, setFadeOut] = useState(false); // To manage fade-out on click
+  const [fade, setFade] = useState(true); 
+  const [fadeOut, setFadeOut] = useState(false);
   const navigate = useNavigate();
   const cameraRef = useRef();
 
   const handleBookClick = () => {
-    // Trigger black fade-out effect before navigating to '/flipbook'
     setFadeOut(true);
     setTimeout(() => {
       navigate('/flipbook');
-    }, 3000); // 3-second delay to allow for the black fade-out
+    }, 2700); 
   };
 
   useEffect(() => {
-    // Initial white fade-in effect when the page loads
-    const timeout = setTimeout(() => setFade(false), 1000); // Fade-in duration of 1 second
+    const timeout = setTimeout(() => setFade(false), 900); 
     return () => clearTimeout(timeout);
   }, []);
 
   return (
     <div className="relative w-full h-screen z-50">
-      {/* White fade-in on load */}
       <div
         className={`absolute inset-0 bg-white transition-opacity duration-[1000ms] ease-out ${
           fade ? 'opacity-100' : 'opacity-0'
         } pointer-events-none z-50`}
       />
 
-      {/* Black fade-out on book click */}
       <div
-        className={`absolute inset-0 bg-black transition-opacity duration-[3000ms] ease-out ${
+        className={`absolute inset-0 bg-black transition-opacity duration-[2500ms] ease-out ${
           fadeOut ? 'opacity-100' : 'opacity-0'
         } pointer-events-none z-50`}
       />
@@ -114,6 +162,7 @@ function RoomPage() {
         <ambientLight intensity={10} />
         <Room />
         <BookModel onClick={handleBookClick} cameraRef={cameraRef} />
+        <BookModel2 onClick={handleBookClick} cameraRef={cameraRef} />
       </Canvas>
     </div>
   );
